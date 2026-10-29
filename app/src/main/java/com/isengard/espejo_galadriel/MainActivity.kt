@@ -16,7 +16,7 @@ class MainActivity: AppCompatActivity() {
     private lateinit var webView: WebView
     private lateinit var progressBar: ProgressBar
 
-    // URL del streaming (cámbiala por la que pida tu profesor)
+
     private val streamUrl = "https://www.youtube.com/watch?v=ZfTU67ZIK3Q&list=PLSR2vNOypvs5yLsbqZc0e6RdqNnP1eGIc"
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -28,10 +28,10 @@ class MainActivity: AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
 
         webView.settings.apply {
-            javaScriptEnabled = true               // necesario para el streaming y la inyección
+            javaScriptEnabled = true
             domStorageEnabled = true
             mediaPlaybackRequiresUserGesture = false
-            loadWithOverviewMode = true            // responsivo: ajusta al ancho
+            loadWithOverviewMode = true
             useWideViewPort = true
             setSupportZoom(false)
         }
@@ -43,7 +43,7 @@ class MainActivity: AppCompatActivity() {
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 progressBar.visibility = View.GONE
-                // Inyección de JavaScript: estilo "espejo de agua" sobre la página cargada
+
                 view?.evaluateJavascript(
                     """
                     (function() {
@@ -64,7 +64,7 @@ class MainActivity: AppCompatActivity() {
             }
         }
 
-        // Cargamos el streaming dentro de un iframe responsivo (16:9) inyectando HTML
+
         val html = """
             <html><head>
             <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -81,7 +81,7 @@ class MainActivity: AppCompatActivity() {
         """.trimIndent()
         webView.loadDataWithBaseURL("https://www.youtube.com", html, "text/html", "utf-8", null)
 
-        // Atrás navega dentro del WebView antes de cerrar la app
+
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (webView.canGoBack()) webView.goBack() else finish()
